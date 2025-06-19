@@ -1,16 +1,20 @@
 import appError from "../utils/appError.js";
 import wrapAsync from "../utils/wrapAsync.js";
-// import GoalsModel from "../models/";
+import { Goal } from "../models/goalModel.js";
 
 export const getGoals = wrapAsync(async (req, res) => {
-  res.status(200).json({ message: "get goals" });
+  const goals = await Goal.find();
+
+  res.status(200).json(goals);
 });
 
 export const setGoals = wrapAsync(async (req, res) => {
   if (!req.body.text) {
     throw new appError("Provide text field", 400);
   }
-  res.status(201).json({ message: "post goals" });
+  const newGoal = await Goal.create({ text: req.body.text });
+
+  res.status(201).json(newGoal);
 });
 
 export const updateGoals = wrapAsync(async (req, res) => {
@@ -18,8 +22,13 @@ export const updateGoals = wrapAsync(async (req, res) => {
   if (!id) {
     throw new appError("Goal ID is required", 400);
   }
+  if (!req.body.text) {
+    throw new appError("Provide text field", 400);
+  }
 
-  res.status(200).json({ message: `update goal with ID: ${id}` });
+  const updatedGoal = await Goal.findByIdAndUpdate(id, req.body, { new: true });
+
+  res.status(200).json(updatedGoal);
 });
 
 export const deleteGoals = wrapAsync(async (req, res) => {
@@ -27,5 +36,6 @@ export const deleteGoals = wrapAsync(async (req, res) => {
   if (!id) {
     throw new appError("Goal ID is required", 400);
   }
+  await Goal.findByIdAndDelete(id);
   res.status(200).json({ message: `delete goal with ID: ${id}` });
 });

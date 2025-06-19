@@ -1,7 +1,8 @@
 import { configDotenv } from "dotenv";
 import goalRoutes from "./routes/goalRoutes.js";
 import appError from "./utils/appError.js";
-import mongoose from "mongoose";
+import { connectDB } from "./config/index.js";
+
 if (process.env.NODE_ENV !== "production") {
   configDotenv();
 }
@@ -14,14 +15,8 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// connecting to mongodb
-const dbUrl = process.env.DBURL || "mongodb://127.0.0.1:27017/goalSetter";
-mongoose
-  .connect(dbUrl)
-  .then(() => {
-    console.log("Connected to MongoDB");
-  })
-  .catch((err) => console.error("Could not connect to MongoDB", err));
+// db connection
+connectDB();
 
 // Routes
 app.use("/api/goals", goalRoutes);
