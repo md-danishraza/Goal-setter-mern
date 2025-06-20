@@ -1,11 +1,11 @@
-import { configDotenv } from "dotenv";
+import { config } from "dotenv";
+config();
 import goalRoutes from "./routes/goalRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+import { protect } from "./middlewares/auth.js";
+
 import appError from "./utils/appError.js";
 import { connectDB } from "./config/index.js";
-
-if (process.env.NODE_ENV !== "production") {
-  configDotenv();
-}
 
 import express from "express";
 
@@ -20,6 +20,7 @@ connectDB();
 
 // Routes
 app.use("/api/goals", goalRoutes);
+app.use("/api/users", userRoutes);
 
 // if no url is matched
 app.use((req, res, next) => {
