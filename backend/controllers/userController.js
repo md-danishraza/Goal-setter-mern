@@ -43,6 +43,7 @@ export const registerUser = wrapAsync(async (req, res) => {
 // POST api/users/login
 export const loginUser = wrapAsync(async (req, res) => {
   const { email, password } = req.body;
+  // console.log(req.body);
   if (!email || !password) {
     throw new appError("Please provide values", 400);
   }
@@ -51,9 +52,11 @@ export const loginUser = wrapAsync(async (req, res) => {
   if (!user) {
     throw new appError("User not found", 400);
   }
-  //   console.log(user);
+  // console.log(user);
   //   compare pass
-  if (await bcrypt.compare(password, user.password)) {
+  const result = await bcrypt.compare(password, user.password);
+  // console.log(result);
+  if (result) {
     res.status(201).json({
       _id: user._id,
       name: user.name,

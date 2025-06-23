@@ -2,7 +2,8 @@ import { config } from "dotenv";
 config();
 import goalRoutes from "./routes/goalRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import { protect } from "./middlewares/auth.js";
+
+import cors from "cors";
 
 import appError from "./utils/appError.js";
 import { connectDB } from "./config/index.js";
@@ -14,6 +15,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 // db connection
 connectDB();

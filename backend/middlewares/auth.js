@@ -3,6 +3,7 @@ import appError from "../utils/appError.js";
 import wrapAsync from "../utils/wrapAsync.js";
 
 export const protect = async (req, res, next) => {
+  // console.log(req.headers.authorization);
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")

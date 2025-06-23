@@ -3,6 +3,7 @@ import wrapAsync from "../utils/wrapAsync.js";
 import { Goal } from "../models/goalModel.js";
 
 export const getGoals = wrapAsync(async (req, res) => {
+  // console.log(req.user);
   // find goals of a user
   const goals = await Goal.find({ user: req.user._id });
 

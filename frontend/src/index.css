@@ -37,10 +37,15 @@ h3 {
 
 .container {
   width: 100%;
+  min-height: 100vh;
   max-width: 960px;
   margin: 0 auto;
   padding: 0 20px;
+  justify-content: center;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+
 }
 
 .header {
@@ -49,7 +54,7 @@ h3 {
   align-items: center;
   padding: 20px 0;
   border-bottom: 1px solid #e6e6e6;
-  margin-bottom: 60px;
+  margin-bottom: 20px;
 }
 
 .header .logo{
@@ -93,8 +98,22 @@ h3 {
 
 .goals {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  width: auto;
+  gap: 1rem;
+  justify-content: center;
+  grid-template-columns: 1fr; /* Default: 1 column */
+}
+
+@media (min-width: 600px) {
+  .goals {
+    grid-template-columns: repeat(2, 1fr); /* Medium: 2 columns */
+  }
+}
+
+@media (min-width: 900px) {
+  .goals {
+    grid-template-columns: repeat(3, 1fr); /* Large: 3 columns */
+  }
 }
 
 .goal {
@@ -102,6 +121,17 @@ h3 {
   margin: 10px 0;
   padding: 20px 0 10px;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-self: flex-start;
+  h2{
+    font-size: large;
+
+  }
+  p{
+    font-size: small;
+  }
 }
 
 .goal .close {
@@ -112,10 +142,15 @@ h3 {
   border: none;
   background: none;
 }
+.form{
+  width: 100%;
+  max-width: 400px;
+  
+}
 
 .form,
 .content {
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -152,6 +187,7 @@ h3 {
 .form-group label {
   text-align: left;
   display: block;
+  font-size:large;
   margin: 0 0 5px 3px;
 }
 
@@ -232,4 +268,9 @@ h3 {
   .heading p {
     font-size: 1.5rem;
   }
+}
+
+
+.footer{
+  margin-top: auto;
 }

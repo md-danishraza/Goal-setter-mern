@@ -1,14 +1,45 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaSignInAlt, FaRegUser } from "react-icons/fa";
+import { redirect, Form, useNavigation } from "react-router-dom";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import authService from "../services/authService";
+import { login } from "../features/authSlice";
+import { toast } from "react-toastify";
+
+export const action =
+  (store) =>
+  async ({ request }) => {
+    const data = Object.fromEntries(await request.formData());
+    // console.log(data);
+    try {
+      const userData = await authService.login({
+        email: data.email,
+        password: data.password,
+      });
+      // add user to state
+      // console.log(userData);
+      store.dispatch(login({ user: userData }));
+      toast.success("Logged In successfully!");
+      return redirect("/");
+    } catch (error) {
+      // console.log(error);
+      const errorMessage =
+        error?.response?.data?.message ||
+        "please double check your credentials";
+      // console.log(error);
+      toast.error(errorMessage);
+      return null;
+    }
+  };
 
 function Login() {
+  const navigation = useNavigation();
+  const isLoading = navigation.state == "submitting";
   const [formData, setData] = useState({
-    email: "",
-    password: "",
-    password2: "",
+    email: "test@gmail.com",
+    password: "test@gmail.com",
   });
 
   const { email, password } = formData;
@@ -18,10 +49,7 @@ function Login() {
       return { ...state, [e.target.name]: e.target.value };
     });
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log("submitted");
-  };
+
   return (
     <>
       <section className="heading">
@@ -32,7 +60,7 @@ function Login() {
       </section>
 
       <section className="form">
-        <form onSubmit={onSubmit}>
+        <Form method="post">
           <div className="form-group">
             <input
               type="email"
@@ -59,11 +87,15 @@ function Login() {
           </div>
 
           <div className="form-group">
-            <button type="submit" className="btn btn-block">
-              Submit
-            </button>
+            {!isLoading ? (
+              <button type="submit" className="btn btn-block">
+                Login
+              </button>
+            ) : (
+              <button className="btn btn-block">WIP...</button>
+            )}
           </div>
-        </form>
+        </Form>
       </section>
     </>
   );

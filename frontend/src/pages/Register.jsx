@@ -1,15 +1,48 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { FaUser, FaRegUser } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
+import { toast } from "react-toastify";
+
+import authService from "../services/authService";
+import { redirect, Form, useNavigation } from "react-router-dom";
+
+import { login } from "../features/authSlice";
+
+export const action =
+  (store) =>
+  async ({ request }) => {
+    const data = Object.fromEntries(await request.formData());
+    // console.log(data);
+    try {
+      const userData = await authService.register({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      });
+      // add user to state
+      store.dispatch(login({ user: userData }));
+      toast.success("account created successfully!");
+      return redirect("/");
+    } catch (error) {
+      const errorMessage =
+        error.response.data.message || "please double check your credentials";
+      // console.log(error);
+      toast.error(errorMessage);
+      return null;
+    }
+  };
 
 function Register() {
+  // const { user, status } = useSelector((state) => state.auth);
+  const navigation = useNavigation();
+  const isLoading = navigation.state == "submitting";
   const [formData, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    password2: "",
+    name: "danish",
+    email: "test@gmail.com",
+    password: "test@gmail.com",
+    password2: "test@gmail.com",
   });
 
   const { name, email, password, password2 } = formData;
@@ -19,10 +52,10 @@ function Register() {
       return { ...state, [e.target.name]: e.target.value };
     });
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    console.log("submitted");
-  };
+
+  // if (isLoading) {
+  //   return <Spinner />;
+  // }
   return (
     <>
       <section className="heading">
@@ -33,7 +66,7 @@ function Register() {
       </section>
 
       <section className="form">
-        <form onSubmit={onSubmit}>
+        <Form method="post">
           <div className="form-group">
             <input
               type="text"
@@ -43,6 +76,7 @@ function Register() {
               value={name}
               placeholder="Enter your name"
               onChange={onChange}
+              // defaultValue="danish"
             />
             <FaRegUser className="icon" />
           </div>
@@ -55,6 +89,7 @@ function Register() {
               value={email}
               placeholder="Enter your email"
               onChange={onChange}
+              // defaultValue="test@gmail.com"
             />
             <MdOutlineMail className="icon" />
           </div>
@@ -67,6 +102,7 @@ function Register() {
               value={password}
               placeholder="Enter password"
               onChange={onChange}
+              // defaultValue="test@gmail.com"
             />
             <RiLockPasswordLine className="icon" />
           </div>
@@ -79,15 +115,20 @@ function Register() {
               value={password2}
               placeholder="Confirm password"
               onChange={onChange}
+              // defaultValue="test@gmail.com"
             />
             <RiLockPasswordLine className="icon" />
           </div>
           <div className="form-group">
-            <button type="submit" className="btn btn-block">
-              Submit
-            </button>
+            {!isLoading ? (
+              <button type="submit" className="btn btn-block">
+                Submit
+              </button>
+            ) : (
+              <button className="btn btn-block">Submitting...</button>
+            )}
           </div>
-        </form>
+        </Form>
       </section>
     </>
   );

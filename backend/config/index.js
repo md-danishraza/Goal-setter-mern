@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 // connecting to mongodb
-// const dbUrl = process.env.DBURL || "mongodb://127.0.0.1:27017/goalSetter";
-const dbUrl = "mongodb://127.0.0.1:27017/goalSetter";
+const dbUrl = process.env.DBURL || "mongodb://127.0.0.1:27017/goalSetter";
+// const dbUrl = "mongodb://127.0.0.1:27017/goalSetter";
 
 const connectDB = () => {
   mongoose
