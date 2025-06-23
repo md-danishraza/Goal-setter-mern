@@ -3,8 +3,6 @@ config();
 import jwt from "jsonwebtoken";
 const secret = process.env.JWT_SECRET;
 
-// console.log(secret);
-
 // fn to create JWT
 export function createTokenForUser(user) {
   const payload = {

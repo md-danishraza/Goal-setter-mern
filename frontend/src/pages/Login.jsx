@@ -38,8 +38,8 @@ function Login() {
   const navigation = useNavigation();
   const isLoading = navigation.state == "submitting";
   const [formData, setData] = useState({
-    email: "test@gmail.com",
-    password: "test@gmail.com",
+    email: "",
+    password: "",
   });
 
   const { email, password } = formData;

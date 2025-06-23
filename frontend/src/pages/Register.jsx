@@ -40,9 +40,9 @@ function Register() {
   const isLoading = navigation.state == "submitting";
   const [formData, setData] = useState({
     name: "danish",
-    email: "test@gmail.com",
-    password: "test@gmail.com",
-    password2: "test@gmail.com",
+    email: "",
+    password: "",
+    password2: "",
   });
 
   const { name, email, password, password2 } = formData;
