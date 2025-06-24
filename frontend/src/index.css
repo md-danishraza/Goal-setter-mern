@@ -231,6 +231,7 @@ h3 {
   right: 0;
   bottom: 0;
   left: 0;
+
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 5000;
   display: flex;
@@ -239,6 +240,8 @@ h3 {
 }
 
 .loadingSpinner {
+  align-self: center;
+  margin-inline: auto;
   width: 64px;
   height: 64px;
   border: 8px solid;
